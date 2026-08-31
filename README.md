@@ -1,10 +1,10 @@
 # RL-Notes
 
-《强化学习的数学原理》课程笔记，基于 [Typst](https://typst.com) 和 [ori](https://github.com/cffnpqr/ori) 模板。
+《强化学习的数学原理》课程笔记，基于 [Typst](https://typst.com) 与 [ori](https://github.com/cffnpqr/ori) 模板。
 
-[![PDF](https://img.shields.io/badge/PDF-latest%20build-blue)](https://github.com/tortrixx/RL-Notes/releases/latest/download/main.pdf)
+**📥 [下载最新 PDF](https://github.com/tortrixx/RL-Notes/releases/latest/download/main.pdf)**
 
-推送 `main` 后由 GitHub Actions 自动编译并发布。
+> 每次推送 `main`，GitHub Actions 自动编译并更新该链接。
 
 ## 编译
 

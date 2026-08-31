@@ -14,10 +14,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install CJK fonts
+      - name: Install fonts (ori template defaults)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-noto-cjk fonts-noto-cjk-extra
+          set -e
+          mkdir -p ~/.local/share/fonts
+          # IBM Plex Serif / Mono
+          base=https://raw.githubusercontent.com/IBM/plex/master/packages
+          for f in \
+            plex-serif/fonts/complete/otf/IBMPlexSerif-Regular.otf \
+            plex-serif/fonts/complete/otf/IBMPlexSerif-Italic.otf \
+            plex-serif/fonts/complete/otf/IBMPlexSerif-Medium.otf \
+            plex-serif/fonts/complete/otf/IBMPlexSerif-SemiBold.otf \
+            plex-serif/fonts/complete/otf/IBMPlexSerif-SemiBoldItalic.otf \
+            plex-serif/fonts/complete/otf/IBMPlexSerif-Bold.otf \
+            plex-serif/fonts/complete/otf/IBMPlexSerif-BoldItalic.otf \
+            plex-mono/fonts/complete/otf/IBMPlexMono-Regular.otf \
+            plex-mono/fonts/complete/otf/IBMPlexMono-Medium.otf \
+            plex-mono/fonts/complete/otf/IBMPlexMono-SemiBold.otf \
+            plex-mono/fonts/complete/otf/IBMPlexMono-Bold.otf; do
+            curl -sfL -o "$HOME/.local/share/fonts/$(basename "$f")" "$base/$f"
+          done
+          # Noto Serif SC (static weights — the Google variable font has an ExtraLight default instance)
+          curl -sfL -o /tmp/noto-serif-sc.zip \
+            https://github.com/notofonts/noto-cjk/releases/download/Serif2.003/14_NotoSerifSC.zip
+          unzip -q -o /tmp/noto-serif-sc.zip -d /tmp/noto-serif-sc
+          cp /tmp/noto-serif-sc/SubsetOTF/SC/*.otf "$HOME/.local/share/fonts/"
+          fc-cache -f
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v5
