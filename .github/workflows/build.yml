@@ -1,0 +1,37 @@
+name: Build PDF
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk fonts-noto-cjk-extra
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v5
+        with:
+          cache-dependency-path: main.typ
+
+      - name: Compile
+        run: typst compile main.typ main.pdf
+
+      - name: Publish release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --yes --cleanup-tag 2>/dev/null || true
+          gh release create latest main.pdf \
+            --title "Latest build" \
+            --notes "Auto-built from \`main\` by GitHub Actions"
