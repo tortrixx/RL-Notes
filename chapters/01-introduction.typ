@@ -4,7 +4,7 @@
 
 // 之前我的笔记记录在#link("https://zcnw5ot89yc6.feishu.cn/wiki/P5ELwwfIbiPTKwkS2vRcV4kTnab?from=from_copylink")[飞书云文档]中，主要看中其画板功能，但是它对于数学公式不友好，无法进行复杂的公式推导，所以我决定将笔记迁移到Typst中。
 
-本笔记主要参考赵世钰老师《强化学习的数学原理》这门课程#footnote[#cite(<zhao2025RLBook>, form: "full", style: "chicago-notes")]，课程视频可以在#link("https://space.bilibili.com/2044042934")[Bilibili]和#link("https://www.youtube.com/channel/UCztGtS5YYiNv8x3pj9hLVgg/playlists")[YouTube]上观看，其所有课件可以在#link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning")[GitHub仓库]中找到。
+本笔记主要参考赵世钰老师的《强化学习的数学原理》课程#footnote[#cite(<zhao2025RLBook>, form: "full", style: "chicago-notes")]，课程视频可以在#link("https://space.bilibili.com/2044042934")[Bilibili]和#link("https://www.youtube.com/channel/UCztGtS5YYiNv8x3pj9hLVgg/playlists")[YouTube]上观看，其所有课件可以在#link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning")[GitHub仓库]中找到。
 
 整个笔记按照#ref(<bookmap>)所示进行组织，首先给出强化学习中的基本概念和公式，然后按顺序介绍强化学习的各种算法思想，对其进行数学分析，并给出相关代码实现。
 
@@ -41,7 +41,7 @@
 )
 
 #figure(
-  image("../figures/BookMap.png", width:88%),
+  image("/assets/BookMap.png", width:88%),
   caption: [Roadmap of Reinforcement Learning（图源：#link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning/blob/main/Readme_Images/BookMap.png")[BookMap.png]）]
 ) <bookmap>
 

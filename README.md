@@ -19,7 +19,7 @@ typst compile main.typ
 | `main.typ` | 入口：设置、章节引入、参考文献 |
 | `chapters/` | 章节内容（按序号命名） |
 | `refs.bib` | 参考文献 |
-| `figures/` | 图片 |
+| `assets/` | 图片 |
 
 ## 引用
 
