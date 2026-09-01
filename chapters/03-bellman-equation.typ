@@ -69,7 +69,11 @@ $ G_t = R_(t+1) + gamma G_(t+1) $
 
 代入 State Value 的定义，利用期望的线性性质：
 
-$ v_pi(s) = bb(E)[G_t | S_t = s] = bb(E)[R_(t+1) | S_t = s] + gamma bb(E)[G_(t+1) | S_t = s] $
+$
+	v_pi(s)
+	&= bb(E)[G_t | S_t = s] \
+	&= bb(E)[R_(t+1) | S_t = s] + gamma bb(E)[G_(t+1) | S_t = s]
+$
 
 下面分别计算两项。
 
@@ -87,8 +91,8 @@ $ bb(E)[R_(t+1) | S_t = s] = sum_a pi(a | s) r(s, a) $
 
 $
 	bb(E)[G_(t+1) | S_t = s]
-	= sum_a pi(a | s) sum_(s') p(s' | s, a) bb(E)[G_(t+1) | S_(t+1) = s']
-	= sum_a pi(a | s) sum_(s') p(s' | s, a) v_pi(s')
+	&= sum_a pi(a | s) sum_(s') p(s' | s, a) bb(E)[G_(t+1) | S_(t+1) = s'] \
+	&= sum_a pi(a | s) sum_(s') p(s' | s, a) v_pi(s')
 $
 
 其中最后一步用到了 State Value 的定义 $v_pi(s') = bb(E)[G_(t+1) | S_(t+1) = s']$。

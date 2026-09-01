@@ -29,6 +29,14 @@ typst compile main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-No
 - **章节内用 ori 函数需自己 import**:`#include` 的子文件不继承 main.typ 的作用域,用 `#definition`、`#proposition` 等需在章节文件顶部加 `#import "@preview/ori:0.2.5": *`(第二章已如此)。
 - **`#show bibliography: none` 是有意为之**:隐藏参考文献列表但保留引用解析——文献全量信息已写在脚注里,不要删除该行。
 - **公式自动编号**:main.typ 设置了 `#set math.equation(numbering: "(1)")`,独立的 `$ ... $` 行即为编号公式。
+- **多行公式对齐**:多步推导每行以 `&=` 开头(等号对齐),行间用 `\` 换行;仅靠源码换行不会对齐等号。示例:
+  ```typst
+  $
+      v_pi(s)
+      &= bb(E)[G_t | S_t = s] \
+      &= bb(E)[R_(t+1) | S_t = s] + gamma bb(E)[G_(t+1) | S_t = s]
+  $
+  ```
 - **下标约定(第二章)**:统一用标准约定 $s_t, a_t \to r_{t+1}, s_{t+1}$,轨迹为 $\{s_0, a_0, r_1, s_1, a_1, r_2, \dots\}$,马尔科夫性质公式为 $p(s_{t+1} \mid a_t, s_t, \dots, a_0, s_0)$。新增内容保持此约定。
 
 ## Notes workflow
