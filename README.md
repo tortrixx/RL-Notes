@@ -1,6 +1,6 @@
 # RL-Notes
 
-《强化学习的数学原理》课程笔记，基于 [Typst](https://typst.com) 与 [ori](https://github.com/hongjr03/typst-ori) 模板。
+《强化学习的数学原理》课程笔记，基于 [Typst](https://typst.com) 与 [ori](https://github.com/OrangeX4/typst-ori) 模板。
 
 **📥 [下载最新 PDF](https://github.com/tortrixx/RL-Notes/releases/latest/download/RL-Notes.pdf)**
 

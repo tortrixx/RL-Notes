@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-《强化学习的数学原理》(赵世钰课程)学习笔记,用 [Typst](https://typst.com) 编写,基于 [ori](https://github.com/hongjr03/typst-ori) 0.2.5 模板(仓库已由 cffnpqr/ori 迁移到 hongjr03/typst-ori)。渲染出的 PDF 通过 GitHub Actions 发布到 `latest` release,README 中的下载链接指向该 release。
+《强化学习的数学原理》(赵世钰课程)学习笔记,用 [Typst](https://typst.com) 编写,基于 [ori](https://github.com/OrangeX4/typst-ori) 0.2.5 模板(作者 OrangeX4)。渲染出的 PDF 通过 GitHub Actions 发布到 `latest` release,README 中的下载链接指向该 release。
 
 ## Build & verify
 
