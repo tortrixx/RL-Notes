@@ -47,13 +47,13 @@ jobs:
           cache-dependency-path: main.typ
 
       - name: Compile
-        run: typst compile main.typ main.pdf
+        run: typst compile main.typ RL-Notes.pdf
 
       - name: Publish release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release delete latest --yes --cleanup-tag 2>/dev/null || true
-          gh release create latest main.pdf \
+          gh release create latest RL-Notes.pdf \
             --title "Latest build" \
             --notes "Auto-built from \`main\` by GitHub Actions"
