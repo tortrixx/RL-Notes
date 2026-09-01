@@ -99,23 +99,31 @@ $
 
 === Bellman 方程
 
-将两项代入，得到对每个状态 $s$ 都成立的 *Bellman 方程*：
+将两项代入，合并即得：
 
-$ v_pi(s) = sum_a pi(a | s) [r(s, a) + gamma sum_(s') p(s' | s, a) v_pi(s')] $ <bellman-eq>
+#theorem[Bellman 方程][
+	对任意状态 $s$，状态价值 $v_pi(s)$ 满足
+
+	$ v_pi(s) = sum_a pi(a | s) [r(s, a) + gamma sum_(s') p(s' | s, a) v_pi(s')] $ <bellman-eq>
+]
 
 它是一个*自洽方程*（self-consistent equation）：未知量 $v_pi$ 同时出现在等式两侧，状态 $s$ 的价值被表示为后续状态价值的加权组合。这正是动态规划"由后往前递推"思想的体现。
 
 === Matrix-Vector Form（矩阵-向量形式）
 
-将所有状态的 Bellman 方程写在一起，得到紧凑的矩阵形式：
+将所有状态的 Bellman 方程写在一起，即得如下推论：
 
-$ v_pi = r_pi + gamma P_pi v_pi $ <bellman-matrix>
+#corollary[矩阵形式（Matrix-Vector Form）][
+	Bellman 方程可以写为紧凑的矩阵形式
 
-其中：
+	$ v_pi = r_pi + gamma P_pi v_pi $ <bellman-matrix>
 
-- $v_pi = [v_pi(s_1), dots, v_pi(s_n)]^T$ 为状态价值向量；
-- $r_pi = [r_pi(s_1), dots, r_pi(s_n)]^T$ 为一步奖励期望向量，$r_pi(s) = sum_a pi(a | s) r(s, a)$；
-- $P_pi$ 为状态转移矩阵，$[P_pi]_(i,j) = sum_a pi(a | s_i) p(s_j | s_i, a)$。
+	其中：
+
+	- $v_pi = [v_pi(s_1), dots, v_pi(s_n)]^T$ 为状态价值向量；
+	- $r_pi = [r_pi(s_1), dots, r_pi(s_n)]^T$ 为一步奖励期望向量，$r_pi(s) = sum_a pi(a | s) r(s, a)$；
+	- $P_pi$ 为状态转移矩阵，$[P_pi]_(i,j) = sum_a pi(a | s_i) p(s_j | s_i, a)$。
+]
 
 当状态数有限时，可以解析求解：
 

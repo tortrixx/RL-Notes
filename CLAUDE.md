@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-《强化学习的数学原理》(赵世钰课程)学习笔记,用 [Typst](https://typst.com) 编写,基于 [ori](https://github.com/cffnpqr/ori) 0.2.5 模板。渲染出的 PDF 通过 GitHub Actions 发布到 `latest` release,README 中的下载链接指向该 release。
+《强化学习的数学原理》(赵世钰课程)学习笔记,用 [Typst](https://typst.com) 编写,基于 [ori](https://github.com/hongjr03/typst-ori) 0.2.5 模板(仓库已由 cffnpqr/ori 迁移到 hongjr03/typst-ori)。渲染出的 PDF 通过 GitHub Actions 发布到 `latest` release,README 中的下载链接指向该 release。
 
 ## Build & verify
 
@@ -26,9 +26,9 @@ typst compile main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-No
 ## Typst gotchas (踩过的坑)
 
 - **没有 `**加粗**` 标记**:`**x**` 会被解析成空强调并报 "no text within stars" 警告,只渲染成普通文本。加粗一律用 `#strong[...]`,斜体用 `*...*`。
-- **章节内用 ori 函数需自己 import**:`#include` 的子文件不继承 main.typ 的作用域,用 `#definition`、`#proposition` 等需在章节文件顶部加 `#import "@preview/ori:0.2.5": *`(第二章已如此)。
+- **章节内用 ori 函数需自己 import**:`#include` 的子文件不继承 main.typ 的作用域,需在章节文件顶部加 `#import "@preview/ori:0.2.5": *`。ori 0.2.5 经 Theorion 包提供定理环境:`#definition`、`#theorem`、`#proposition`、`#lemma`、`#corollary`、`#proof`、`#example`、`#assumption`、`#conclusion`、`#problem`、`#remark-block`,签名均为 `#env[标题][内容] <label>`(自动编号,可 `@标签` 交叉引用)。**语句放框内,解释文字放框外**——第三章约定:Bellman 方程用 `#theorem` 框、矩阵形式用 `#corollary` 框。
 - **`#show bibliography: none` 是有意为之**:隐藏参考文献列表但保留引用解析——文献全量信息已写在脚注里,不要删除该行。
-- **公式自动编号**:main.typ 设置了 `#set math.equation(numbering: "(1)")`,独立的 `$ ... $` 行即为编号公式。
+- **公式自动编号**:main.typ 设置了 `#set math.equation(numbering: "(1)")`,独立的 `$ ... $` 行即为编号公式。公式后可加标签 `$ ... $ <bellman-eq>` 供 `#ref(<bellman-eq>)` 交叉引用(第三章 Bellman 方程、矩阵形式已如此)。
 - **多行公式对齐**:多步推导每行以 `&=` 开头(等号对齐),行间用 `\` 换行;仅靠源码换行不会对齐等号。示例:
   ```typst
   $
