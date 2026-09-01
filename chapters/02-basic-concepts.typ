@@ -6,7 +6,7 @@
 
 #figure(
   image("/assets/interaction.png"),
-  caption: [智能体与环境的交互过程]
+  caption: [The agent–environment interaction in a Markov decision process]
 )<interact>
 
 马尔可夫决策过程（MDP）是强化学习问题的数学框架。强化学习的基本交互过程如#ref(<interact>) 所示：智能体根据当前状态 $s_t$ 选择动作 $a_t$ ，环境据此反馈奖励 $r_(t+1)$ 并转移到新的状态 $s_(t+1)$ ，如此循环往复，从而生成一段轨迹（trajectory），如 ${s_0, a_0, r_1, s_1, a_1, r_2, dots}$ 。整个交互过程构成了一个 MDP。
@@ -53,7 +53,7 @@ MDP 由三部分组成：
 
   *概率分布（Probability Distributions）*
 
-  - #strong[状态转移概率]：$P(s' | s, a)$，在状态 $s$ 下采取动作 $a$ 后，转移到新状态 $s'$ 的概率。
-  - #strong[奖励概率]：$p(r | s, a)$，在状态 $s$ 下采取动作 $a$ 后，获得奖励 $r$ 的概率。若奖励是确定的，则记为五元组中的奖励函数 $R(s, a)$。
+  - #strong[状态转移概率]：$p(s' | s, a)$，在状态 $s$ 下采取动作 $a$ 后，转移到新状态 $s'$ 的概率。
+  - #strong[奖励概率]：$p(r | s, a)$，在状态 $s$ 下采取动作 $a$ 后，获得奖励 $r$ 的概率。
 
-综上，五元组 $(cal(S), cal(A), P, R, gamma)$ 中：$cal(S)$、$cal(A)$、$P$、$R$ 描述了环境（P），折扣因子 $gamma$ 权衡即时与未来奖励，策略 $pi$ 是智能体的决策准则（D），马尔科夫性质（M）则是整个过程成立的前提假设。
+综上，一个完整的 MDP 可记为五元组 $(cal(S), cal(A), P, R, gamma)$，其中 $P$ 表示状态转移概率，$R$ 表示奖励函数。

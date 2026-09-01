@@ -51,5 +51,9 @@
 
 #include "chapters/02-basic-concepts.typ"
 
+#pagebreak()
+
+#include "chapters/03-bellman-equation.typ"
+
 #show bibliography: none
 #bibliography("refs.bib")
