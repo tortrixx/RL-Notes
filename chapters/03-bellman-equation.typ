@@ -131,3 +131,4 @@ $ v_pi = (bb(I) - gamma P_pi)^(-1) r_pi $
 
 当状态数很多时矩阵求逆不可行，需要用迭代法求解，这将在后续章节介绍。
 
+#image("../assets/DQN.pdf")

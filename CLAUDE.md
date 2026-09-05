@@ -38,9 +38,10 @@ typst compile main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-No
   $
   ```
 - **下标约定(第二章)**:统一用标准约定 $s_t, a_t \to r_{t+1}, s_{t+1}$,轨迹为 $\{s_0, a_0, r_1, s_1, a_1, r_2, \dots\}$,马尔科夫性质公式为 $p(s_{t+1} \mid a_t, s_t, \dots, a_0, s_0)$。新增内容保持此约定。
-- **SVG 图片的坑**:Typst 嵌入 SVG 时**忽略 `<foreignObject>`**——编译给出 warning,其中内容(常是 HTML 排版的数学文字)全部丢失(官方 issue #1421)。含此类结构的 SVG(如 Gemini 生成的图)不可直接嵌入。另 SVG 内文字按 Typst 字体簿回退渲染,CI 只装 IBM Plex 与 Noto Serif SC,未声明这两族的 `<text>` 在本地与 CI 渲染可能不一致。含 HTML/外来字体的 SVG 须先"烧字"成 PNG 再引用:
-  `"Google Chrome" --headless=new --disable-gpu --force-device-scale-factor=2 --window-size=<viewBox宽>,<高> --screenshot=out.png "file:///绝对路径/in.svg"`
-  (assets/gemini-svg.svg 已按此转出 gemini-svg.png,svg 保留为源,改图后重跑该命令)。
+- **SVG 图片的坑**:Typst 嵌入 SVG 时**忽略 `<foreignObject>`**——编译给出 warning,其中内容(常是 HTML 排版的数学文字)全部丢失(官方 issue #1421)。**任何含 foreignObject 的 SVG(如 Gemini 生成的图)都不要直接 `#image` 嵌入**。另 SVG 内文字按 Typst 字体簿回退渲染,CI 只装 IBM Plex 与 Noto Serif SC,未声明这两族的 `<text>` 在本地与 CI 渲染可能不一致。含 HTML/外来字体的 SVG 须先烧字再引用,两种产物:
+  - 矢量 PDF(推荐,无损缩放):写个 `@page { size: <宽>px <高>px; margin: 0 }` 的 HTML 包住 `<img src=...svg>`,再 `"Google Chrome" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf=out.pdf "file:///wrap.html"`,`image()` 直接嵌 PDF;
+  - PNG 后备:`"Google Chrome" --headless=new --disable-gpu --force-device-scale-factor=2 --window-size=<宽>,<高> --screenshot=out.png "file:///绝对路径/in.svg"`
+  (assets/DQN.svg 即此类源图,其烧字产物为 DQN.pdf;SVG 源保留入库,改图后重跑对应命令)。
 - **图片格式约定**:矢量线框图优先存 SVG(文字须声明 CI 已装字体族),或存烧字 PDF(Typst 0.15+ 支持 `image()` 直接嵌 PDF,matplotlib 等绘图工具的输出推荐);含外来字体/HTML 结构的复杂 SVG 与照片截图一律用高分辨率 PNG(2x+),如 assets/BookMap.png 等截图类。
 
 ## Notes workflow
