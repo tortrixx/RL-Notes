@@ -26,6 +26,10 @@ typst compile main.typ RL-Notes.pdf
 - 正文：`@key`（对应 `refs.bib` 条目）
 - 图片：`#ref(<label>)` 交叉引用；图注标注图源
 
+## 许可证
+
+作者原创内容（笔记正文、自绘图表）采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)（署名-非商业性使用）授权；课程、书籍来源的图片版权归原作者，图注已标注出处。
+
 ## 参考
 
 - [《强化学习的数学原理》](https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning)
