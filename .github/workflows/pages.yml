@@ -1,10 +1,16 @@
 name: Deploy PDF to GitHub Pages
 
 # 触发时机:
-# - release published:每次发布 Release 即部署。main 推送由 build.yml 自动发布
-#   latest release,也会触发本流程,因此主分支更新与 Release 发布两条路径都汇于此
+# - workflow_run:Build PDF 流程成功完成后(推送 main 由 build.yml 编译并自动
+#   发布 latest release)。注意不能用 release 事件监听自动构建——CI 用
+#   GITHUB_TOKEN 创建的 release 不会触发 release published 事件(GitHub 防递归规则)
+# - release published:手动发布的 Release(浏览器/个人 token 创建)
 # - workflow_dispatch:手动重新部署当前 latest release
 on:
+  workflow_run:
+    workflows: ["Build PDF"]
+    types: [completed]
+    branches: [main]
   release:
     types: [published]
   workflow_dispatch:
@@ -23,18 +29,36 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: github-pages
+    # build 失败时不要部署旧 PDF
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
-      # 从触发的 Release 提取 PDF(workflow_dispatch 无 release 事件时取 latest)
       - name: Download PDF from release
+        if: github.event_name == 'release'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ github.event.release.tag_name || 'latest' }}"
-          gh release download "$TAG" \
+          gh release download "${{ github.event.release.tag_name }}" \
             --repo "${{ github.repository }}" \
             --pattern "RL-Notes.pdf"
 
-      # 组装 Pages 站点:仅托管 PDF(根目录无 index.html,访问 /RL-Notes/RL-Notes.pdf 直链)
+      # 推送/手动重跑走这里:下载 latest。连续推送时 build 会先删后建
+      # release,存在短暂窗口,故带重试
+      - name: Download latest release PDF
+        if: github.event_name != 'release'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in $(seq 1 10); do
+            if gh release download latest \
+              --repo "${{ github.repository }}" \
+              --pattern "RL-Notes.pdf"; then
+              exit 0
+            fi
+            sleep 3
+          done
+          exit 1
+
+      # 仅托管 PDF(无 index.html,访问根路径会 404;直链 /RL-Notes/RL-Notes.pdf)
       - name: Stage Pages directory
         run: |
           mkdir -p _site
