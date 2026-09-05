@@ -34,25 +34,11 @@ jobs:
             --repo "${{ github.repository }}" \
             --pattern "RL-Notes.pdf"
 
-      # 组装 Pages 站点:首页重定向到 PDF
+      # 组装 Pages 站点:仅托管 PDF(根目录无 index.html,访问 /RL-Notes/RL-Notes.pdf 直链)
       - name: Stage Pages directory
         run: |
           mkdir -p _site
           mv RL-Notes.pdf _site/RL-Notes.pdf
-          cat > _site/index.html <<'EOF'
-          <!doctype html>
-          <html lang="zh-CN">
-            <head>
-              <meta charset="utf-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <meta http-equiv="refresh" content="0; url=./RL-Notes.pdf" />
-              <title>RL-Notes</title>
-            </head>
-            <body>
-              <p><a href="./RL-Notes.pdf">《强化学习的数学原理》学习笔记 (RL-Notes.pdf)</a></p>
-            </body>
-          </html>
-          EOF
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
