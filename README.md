@@ -2,7 +2,7 @@
 
 《强化学习的数学原理》课程笔记，基于 [Typst](https://typst.com) 与 [ori](https://github.com/OrangeX4/typst-ori) 模板。
 
-**📥 [下载最新 PDF](https://github.com/tortrixx/RL-Notes/releases/latest/download/RL-Notes.pdf) · [📖 在线阅读](https://tortrixx.github.io/RL-Notes/RL-Notes.pdf)**
+**📥 [下载最新 PDF](https://github.com/tortrixx/RL-Notes/releases/latest/download/RL-Notes.pdf) · 📖 [在线阅读](https://tortrixx.github.io/RL-Notes/RL-Notes.pdf)**
 
 > 每次推送 `main`，GitHub Actions 自动编译并更新以上链接（release 链接与 GitHub Pages 同步发布）。
 
@@ -29,3 +29,7 @@ typst compile main.typ RL-Notes.pdf
 ## 参考
 
 - [《强化学习的数学原理》](https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning)
+
+- [李宏毅 Deep Reinforcement Learning, 2018](https://youtube.com/playlist?list=PLJV_el3uVTsODxQFgzMzPLa16h6B8kWM_&si=kBkxp0OGjZY06Xmt)
+
+- [CleanRL: High-quality Single-file Implementations of Deep RL Algorithms](https://github.com/vwxyzjn/cleanrl)
