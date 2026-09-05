@@ -1,0 +1,66 @@
+name: Deploy PDF to GitHub Pages
+
+# 触发时机:
+# - release published:每次发布 Release 即部署。main 推送由 build.yml 自动发布
+#   latest release,也会触发本流程,因此主分支更新与 Release 发布两条路径都汇于此
+# - workflow_dispatch:手动重新部署当前 latest release
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 串行部署,避免并发 run 相互覆盖
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      # 从触发的 Release 提取 PDF(workflow_dispatch 无 release 事件时取 latest)
+      - name: Download PDF from release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ github.event.release.tag_name || 'latest' }}"
+          gh release download "$TAG" \
+            --repo "${{ github.repository }}" \
+            --pattern "RL-Notes.pdf"
+
+      # 组装 Pages 站点:首页重定向到 PDF
+      - name: Stage Pages directory
+        run: |
+          mkdir -p _site
+          mv RL-Notes.pdf _site/RL-Notes.pdf
+          cat > _site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="zh-CN">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <meta http-equiv="refresh" content="0; url=./RL-Notes.pdf" />
+              <title>RL-Notes</title>
+            </head>
+            <body>
+              <p><a href="./RL-Notes.pdf">《强化学习的数学原理》学习笔记 (RL-Notes.pdf)</a></p>
+            </body>
+          </html>
+          EOF
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

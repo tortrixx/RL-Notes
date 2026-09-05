@@ -2,14 +2,14 @@
 
 《强化学习的数学原理》课程笔记，基于 [Typst](https://typst.com) 与 [ori](https://github.com/OrangeX4/typst-ori) 模板。
 
-**📥 [下载最新 PDF](https://github.com/tortrixx/RL-Notes/releases/latest/download/RL-Notes.pdf)**
+**📥 [下载最新 PDF](https://github.com/tortrixx/RL-Notes/releases/latest/download/RL-Notes.pdf) · [📖 在线阅读](https://tortrixx.github.io/RL-Notes/)**
 
-> 每次推送 `main`，GitHub Actions 自动编译并更新该链接。
+> 每次推送 `main`，GitHub Actions 自动编译并更新以上链接（release 链接与 GitHub Pages 同步发布）。
 
 ## 编译
 
 ```bash
-typst compile main.typ
+typst compile main.typ RL-Notes.pdf
 ```
 
 ## 结构

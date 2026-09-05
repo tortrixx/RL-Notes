@@ -41,4 +41,6 @@ typst compile main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-No
 
 ## Notes workflow
 
-- 推送 main 分支即自动触发 CI:编译 PDF 并更新 `latest` release。
+- 推送 main 分支即自动触发 `.github/workflows/build.yml`:编译 PDF 并更新 `latest` release。
+- Release 发布时(含上述自动更新,以及手动发布的 Release)触发 `.github/workflows/pages.yml`:从 Release 提取 `RL-Notes.pdf` 并部署到 GitHub Pages,`https://tortrixx.github.io/RL-Notes/` 首页重定向到该 PDF。可用 `workflow_dispatch` 手动重新部署当前 `latest` release。
+- 首次部署前需在仓库 Settings → Pages 将 Source 设为 **GitHub Actions**(`actions/configure-pages` 步骤会自动完成配置,若仍报 Pages 未启用则需手动设置一次)。
