@@ -42,5 +42,5 @@ typst compile main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-No
 ## Notes workflow
 
 - 推送 main 分支即自动触发 `.github/workflows/build.yml`:编译 PDF 并更新 `latest` release。
-- 推送 main 后 build.yml 编译成功即触发 `.github/workflows/pages.yml`(通过 `workflow_run` 监听,而非 release 事件——CI 用 GITHUB_TOKEN 创建的 release 不会触发 `release: published`,这是 GitHub 防递归规则);手动发布 Release(浏览器/个人 token)同样触发。pages.yml 从 Release 提取 `RL-Notes.pdf` 部署到 GitHub Pages,直链 `https://tortrixx.github.io/RL-Notes/RL-Notes.pdf`(根目录无 index.html,访问根路径 404)。可用 `workflow_dispatch` 手动重新部署当前 `latest` release。
+- 推送 main 后 build.yml 编译成功即触发 `.github/workflows/pages.yml`(通过 `workflow_run` 监听,而非 release 事件——CI 用 GITHUB_TOKEN 创建的 release 不会触发 `release: published`,这是 GitHub 防递归规则);手动发布 Release(浏览器/个人 token)同样触发。pages.yml 从 Release 提取 `RL-Notes.pdf` 部署到 GitHub Pages,直链 `https://tortrixx.github.io/RL-Notes/RL-Notes.pdf`(根目录无 index.html,访问根路径 404)。可用 `workflow_dispatch` 手动重新部署当前 `latest` release;部署末尾 smoke-test 校验直链返回 `200 application/pdf`,异常则流程报红。
 - 首次部署前需在仓库 Settings → Pages 将 Source 设为 **GitHub Actions**(`actions/configure-pages` 步骤会自动完成配置,若仍报 Pages 未启用则需手动设置一次)。

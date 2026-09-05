@@ -65,12 +65,34 @@ jobs:
           mv RL-Notes.pdf _site/RL-Notes.pdf
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+
+      # 校验直链可访问(Pages 传播有延迟,带重试;避免"部署成功但 404"的静默失败)
+      - name: Smoke-test deployed PDF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BASE="$(gh api "repos/${{ github.repository }}/pages" --jq .html_url 2>/dev/null)"
+          if [ -z "$BASE" ] || [ "$BASE" = "null" ]; then
+            # gh api 读不到配置时的兜底:project pages URL 由 owner/repo 决定
+            BASE="https://$(echo "${{ github.repository }}" | cut -d/ -f1).github.io/$(echo "${{ github.repository }}" | cut -d/ -f2)"
+          fi
+          URL="$BASE/RL-Notes.pdf"
+          for i in $(seq 1 15); do
+            out="$(curl -sIL -o /dev/null -w '%{http_code} %{content_type}' "$URL")"
+            if [ "$out" = "200 application/pdf" ]; then
+              echo "PDF live: $URL"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Deployed PDF not reachable: $URL (last status: $out)" >&2
+          exit 1
