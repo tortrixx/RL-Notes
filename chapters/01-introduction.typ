@@ -37,12 +37,12 @@
 #roadmap-item(
   [④],
   [策略优化],
-  [Policy Gradient → Actor-Critic],
+  [Policy Gradient → Actor-Critic → PPO],
 )
 
 #figure(
   image("/assets/BookMap.png", width:88%),
-  caption: [Roadmap of Reinforcement Learning（图源：#link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning/blob/main/Readme_Images/BookMap.png")[BookMap.png]）]
+  caption: [Roadmap of Reinforcement Learning (Source: #link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning/blob/main/Readme_Images/BookMap.png")[BookMap.png])]
 ) <bookmap>
 
 == Other study materials

@@ -5,8 +5,9 @@
 == Markov Decision Process (MDP)
 
 #figure(
-  image("/assets/interaction.png"),
-  caption: [The agent–environment interaction in a Markov decision process]
+  image("/assets/interaction.svg"),
+  caption: [The agent–environment interaction in a Markov decision process \
+  (Source: #link("http://incompleteideas.net/book/RLbook2020.pdf")[Sutton & Barto])]
 )<interact>
 
 马尔可夫决策过程（MDP）是强化学习问题的数学框架。强化学习的基本交互过程如#ref(<interact>) 所示：智能体根据当前状态 $s_t$ 选择动作 $a_t$ ，环境据此反馈奖励 $r_(t+1)$ 并转移到新的状态 $s_(t+1)$ ，如此循环往复，从而生成一段轨迹（trajectory），如 ${s_0, a_0, r_1, s_1, a_1, r_2, dots}$ 。整个交互过程构成了一个 MDP。
