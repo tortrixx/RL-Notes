@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 640" width="100%" height="100%" style="background-color: #ffffff;">
+  <defs>
+    <!-- Arrow Markers -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111111" />
+    </marker>
+    <marker id="blue-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0033cc" />
+    </marker>
+    <style>
+      .math-font {
+        font-family: "Cambria Math", "Times New Roman", Times, serif;
+        font-size: 21px;
+        color: #111111;
+        user-select: none;
+      }
+      .math-font sub {
+        font-size: 14px;
+        vertical-align: -3px;
+      }
+      .math-font sup {
+        font-size: 14px;
+        vertical-align: 6px;
+      }
+      .math-font-lg {
+        font-family: "Cambria Math", "Times New Roman", Times, serif;
+        font-size: 24px;
+        color: #111111;
+        user-select: none;
+      }
+      .math-font-lg sub {
+        font-size: 16px;
+        vertical-align: -4px;
+      }
+      .math-font-lg sup {
+        font-size: 16px;
+        vertical-align: 8px;
+      }
+      .sans-label {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <text x="50" y="65" class="sans-label" font-size="34" font-weight="400" fill="#222222">Target Network</text>
+
+  <!-- Top-Right Math Box (Blue Border, Enlarged) -->
+  <g>
+    <rect x="500" y="55" width="455" height="155" fill="#ffffff" stroke="#0033cc" stroke-width="2.8" />
+    <foreignObject x="505" y="60" width="445" height="145">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box;">
+        <div class="math-font-lg" style="font-size: 22px; margin-bottom: 10px;">
+          … <i>s</i><sub><i>t</i></sub>, <i>a</i><sub><i>t</i></sub>, <i>r</i><sub><i>t</i></sub>, <i>s</i><sub><i>t</i>+1</sub> …
+        </div>
+        <div style="align-self: flex-start; margin-left: 32px;">
+          <div class="math-font-lg">
+            <i>Q</i><sup>π</sup>(<i>s</i><sub><i>t</i></sub>, <i>a</i><sub><i>t</i></sub>)
+          </div>
+          <div class="math-font-lg" style="margin-top: 6px; padding-left: 42px;">
+            = <i>r</i><sub><i>t</i></sub> + <i>Q</i><sup>π</sup>(<i>s</i><sub><i>t</i>+1</sub>, π(<i>s</i><sub><i>t</i>+1</sub>))
+          </div>
+        </div>
+      </div>
+    </foreignObject>
+  </g>
+
+  <!-- ================= LEFT SIDE: Current Q Network ================= -->
+  <!-- Blue Input Box: s_t -->
+  <rect x="110" y="220" width="36" height="70" fill="#9dbbe5" stroke="#7298cd" stroke-width="1.2" />
+  <foreignObject x="110" y="220" width="36" height="70">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font"><i>s</i><sub><i>t</i></sub></span>
+    </div>
+  </foreignObject>
+  <line x1="146" y1="255" x2="176" y2="255" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Green Input Box: a_t -->
+  <rect x="110" y="297" width="36" height="38" fill="#bedbb4" stroke="#8cb47f" stroke-width="1.2" />
+  <foreignObject x="110" y="297" width="36" height="38">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font"><i>a</i><sub><i>t</i></sub></span>
+    </div>
+  </foreignObject>
+  <line x1="146" y1="316" x2="176" y2="316" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Peach Network Box: Q^pi -->
+  <rect x="178" y="217" width="76" height="118" fill="#fbbd94" stroke="#e09c6f" stroke-width="1.2" />
+  <foreignObject x="178" y="217" width="76" height="118">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font" style="font-size: 26px;"><i>Q</i><sup>π</sup></span>
+    </div>
+  </foreignObject>
+  <text x="216" y="360" class="sans-label" font-size="18" fill="#d93829" text-anchor="middle">update</text>
+
+  <!-- Output Arrow to Q^pi(s_t, a_t) -->
+  <line x1="254" y1="276" x2="335" y2="276" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- ================= MIDDLE: Aligned Regression Section ================= -->
+  <!-- Top Formula: Q^pi(s_t, a_t) -->
+  <foreignObject x="350" y="256" width="210" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font"><i>Q</i><sup>π</sup>(<i>s</i><sub><i>t</i></sub>, <i>a</i><sub><i>t</i></sub>)</span>
+    </div>
+  </foreignObject>
+
+  <!-- Vertical Regression Arrow -->
+  <line x1="455" y1="304" x2="455" y2="424" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)" />
+  <text x="468" y="368" class="sans-label" font-size="18" fill="#d93829">regression</text>
+
+  <!-- Bottom Formula: r_t + Q^pi(...) -->
+  <foreignObject x="310" y="432" width="290" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font"><i>r</i><sub><i>t</i></sub> + <i>Q</i><sup>π</sup>(<i>s</i><sub><i>t</i>+1</sub>, π(<i>s</i><sub><i>t</i>+1</sub>))</span>
+    </div>
+  </foreignObject>
+  <text x="455" y="495" class="sans-label" font-size="18" fill="#d93829" text-anchor="middle">fixed value</text>
+
+  <!-- ================= RIGHT SIDE: Target Network ================= -->
+  <!-- Header Text -->
+  <text x="736" y="293" class="sans-label" font-size="19" fill="#0033cc" text-anchor="middle">Target</text>
+  <text x="736" y="316" class="sans-label" font-size="19" fill="#0033cc" text-anchor="middle">Network</text>
+
+  <!-- Arrow from Target Network to Target Formula -->
+  <line x1="698" y1="452" x2="598" y2="452" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Peach Target Network Box -->
+  <rect x="698" y="393" width="76" height="118" fill="#fbbd94" stroke="#e09c6f" stroke-width="1.2" />
+  <foreignObject x="698" y="393" width="76" height="118">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font" style="font-size: 26px;"><i>Q</i><sup>π</sup></span>
+    </div>
+  </foreignObject>
+  <text x="736" y="536" class="sans-label" font-size="18" fill="#d93829" text-anchor="middle">fixed</text>
+
+  <!-- Input Arrow & Blue Box: s_{t+1} -->
+  <line x1="812" y1="414" x2="774" y2="414" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" />
+  <rect x="812" y="385" width="36" height="74" fill="#9dbbe5" stroke="#7298cd" stroke-width="1.2" />
+  <foreignObject x="812" y="385" width="36" height="74">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font"><i>s</i><sub><i>t</i>+1</sub></span>
+    </div>
+  </foreignObject>
+
+  <!-- Input Arrow & Green Box: pi(s_{t+1}) -->
+  <line x1="812" y1="486" x2="774" y2="486" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" />
+  <rect x="812" y="467" width="94" height="38" fill="#bedbb4" stroke="#8cb47f" stroke-width="1.2" />
+  <foreignObject x="812" y="467" width="94" height="38">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <span class="math-font" style="font-size: 19px;">π(<i>s</i><sub><i>t</i>+1</sub>)</span>
+    </div>
+  </foreignObject>
+
+  <!-- ================= BOTTOM: Periodic Parameter Update ================= -->
+  <path d="M 216 373 L 216 585 L 736 585 L 736 551" fill="none" stroke="#0033cc" stroke-width="3" marker-end="url(#blue-arrow)" />
+  <text x="476" y="573" class="sans-label" font-size="18" font-weight="500" fill="#0033cc" text-anchor="middle">
+    After updating N times
+  </text>
+</svg>

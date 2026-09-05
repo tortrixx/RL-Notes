@@ -56,9 +56,28 @@
   ] \
   强化学习领域的“圣经”，内容全面，适合系统学习。
 
+*GitHub 项目*
+
+- #link("https://github.com/walkinglabs/hands-on-modern-rl")[
+    WalkingLabs, _Hands-On Modern RL_
+  ] \
+  从经典强化学习到现代 LLM 与 Agentic RL 的开源教程，\
+  强调理论推导、代码实现与实验相结合。
+
+- #link("https://github.com/vwxyzjn/cleanrl")[
+    CleanRL, _Clean Implementation of RL Algorithms_
+  ] \
+  高质量的深度强化学习单文件实现，代码简洁且易于阅读，\
+  适合学习 DQN、PPO、SAC 等算法的完整工程实现。
+
 *经典课程*
 
-- #link("https://www.davidsilver.uk/teaching/")[
+- #link("https://youtu.be/XWukX-ayIrs?si=iINM06hMJBa-ZsFw")[
+  Hung-yi Lee, _概述增强式学习_
+  ] — National Taiwan University \
+  深入浅出讲解强化学习的基本概念，适合初学者。
+  
+- #link("https://davidstarsilver.wordpress.com/teaching/")[
     David Silver, _Reinforcement Learning_
   ] \
   强化学习领域的奠基级公开课，基于 Sutton 的经典教材。
