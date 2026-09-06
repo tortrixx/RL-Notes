@@ -2,11 +2,9 @@
 
 == About this note
 
-// 之前我的笔记记录在#link("https://zcnw5ot89yc6.feishu.cn/wiki/P5ELwwfIbiPTKwkS2vRcV4kTnab?from=from_copylink")[飞书云文档]中，主要看中其画板功能，但是它对于数学公式不友好，无法进行复杂的公式推导，所以我决定将笔记迁移到Typst中。
-
 本笔记主要参考赵世钰老师的《强化学习的数学原理》课程#footnote[#cite(<zhao2025RLBook>, form: "full", style: "chicago-notes")]，课程视频可以在#link("https://space.bilibili.com/2044042934")[Bilibili]和#link("https://www.youtube.com/channel/UCztGtS5YYiNv8x3pj9hLVgg/playlists")[YouTube]上观看，其所有课件可以在#link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning")[GitHub仓库]中找到。
 
-整个笔记按照#ref(<bookmap>)所示进行组织，首先给出强化学习中的基本概念和公式，然后按顺序介绍强化学习的各种算法思想，对其进行数学分析，并给出相关代码实现。
+整个笔记按照#ref(<bookmap>) 所示进行组织，首先给出强化学习中的基本概念和公式，然后按顺序介绍强化学习的各种算法思想，对其进行数学分析，并给出相关代码实现。
 
 总体分为四个部分：
 
@@ -37,7 +35,7 @@
 #roadmap-item(
   [④],
   [策略优化],
-  [Policy Gradient → Actor-Critic → PPO],
+  [Policy Gradient → Actor-Critic],
 )
 
 #figure(
@@ -72,11 +70,18 @@
 
 *经典课程*
 
-- #link("https://youtu.be/XWukX-ayIrs?si=iINM06hMJBa-ZsFw")[
-  Hung-yi Lee, _概述增强式学习_
-  ] — National Taiwan University \
-  深入浅出讲解强化学习的基本概念，适合初学者。
-  
+- 李宏毅 — National Taiwan University \
+  - #link("https://youtu.be/XWukX-ayIrs?si=iINM06hMJBa-ZsFw")[
+  _概述增强式学习（1-5节）_
+  ] \
+    深入浅出讲解强化学习的基本概念，适合初学者建立直观认识。
+
+  - #link("https://youtube.com/playlist?list=PLJV_el3uVTsODxQFgzMzPLa16h6B8kWM_&si=uXz0EKRvIkD8QeIz")[
+    _深度强化学习, 2018_
+  ] \
+    深度强化学习课程，涵盖 PPO、DQN、Actor-Critic 等基础算法，\
+    适合掌握基础算法后进一步学习。
+
 - #link("https://davidstarsilver.wordpress.com/teaching/")[
     David Silver, _Reinforcement Learning_
   ] \

@@ -56,12 +56,14 @@ $
 
 ]
 
-=== 区分 Discounted Return 和 State Value
+=== Discounted Return vs. State Value
 
 - *Discounted Return*：在状态 $s$ 下，按照单个确定轨迹得到的 $G_t$ 值。
 - *State Value*：在状态 $s$ 下，如果存在多个可能的轨迹，则为这些轨迹对应 Discounted Return 的期望值。
 
 == Derivation of the Bellman Equation
+
+=== Derivation
 
 首先把折扣回报 $G_t$ 拆成当前奖励与折扣的后续回报两部分：
 
@@ -77,7 +79,7 @@ $
 
 下面分别计算两项。
 
-=== 第一项：当前奖励的期望
+- *第一项：当前奖励的期望*
 
 从状态 $s$ 出发，按策略 $pi$ 选择动作，当前奖励的期望为
 
@@ -85,9 +87,9 @@ $ bb(E)[R_(t+1) | S_t = s] = sum_a pi(a | s) r(s, a) $
 
 其中 $r(s, a) = bb(E)[R_(t+1) | S_t = s, A_t = a]$ 是采取动作 $a$ 后的平均奖励（若奖励是确定的，则直接取奖励值）。
 
-=== 第二项：未来回报的期望
+- *第二项：未来回报的期望*
 
-由马尔科夫性质，$G_(t+1)$ 只与下一时刻的状态 $S_(t+1)$ 有关，而与 $S_t$ 无关，因此
+由马尔可夫性质，$G_(t+1)$ 只与下一时刻的状态 $S_(t+1)$ 有关，而与 $S_t$ 无关，因此
 
 $
 	bb(E)[G_(t+1) | S_t = s]
@@ -97,7 +99,7 @@ $
 
 其中最后一步用到了 State Value 的定义 $v_pi(s') = bb(E)[G_(t+1) | S_(t+1) = s']$。
 
-=== Bellman 方程
+=== Bellman Equation
 
 将两项代入，合并即得：
 
@@ -107,7 +109,7 @@ $
 	$ v_pi(s) = sum_a pi(a | s) [r(s, a) + gamma sum_(s') p(s' | s, a) v_pi(s')] $ <bellman-eq>
 ]
 
-它是一个*自洽方程*（self-consistent equation）：未知量 $v_pi$ 同时出现在等式两侧，状态 $s$ 的价值被表示为后续状态价值的加权组合。这正是动态规划"由后往前递推"思想的体现。
+它是一个*自洽方程*（self-consistent equation）：未知量 $v_pi$ 同时出现在等式两侧，状态 $s$ 的价值被表示为后续状态价值的加权组合。这正是动态规划“由后往前递推”思想的体现。
 
 === Matrix-Vector Form（矩阵-向量形式）
 
@@ -130,4 +132,3 @@ $
 $ v_pi = (bb(I) - gamma P_pi)^(-1) r_pi $
 
 当状态数很多时矩阵求逆不可行，需要用迭代法求解，这将在后续章节介绍。
-
