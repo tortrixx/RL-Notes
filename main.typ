@@ -55,5 +55,11 @@
 
 #include "chapters/03-bellman-equation.typ"
 
+#pagebreak()
+
+#include "chapters/09-policy-gradient.typ"
+
+#pagebreak()
+
 #show bibliography: none
 #bibliography("refs.bib")
