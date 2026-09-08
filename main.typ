@@ -26,16 +26,33 @@
   entry.note.body
 }
 
+// 封面与 ori 元数据共用(单一数据源)
+#let cover-title = "Reinforcement Learning"
+#let cover-author = "Jiaxin Liu"
+#let cover-pad2 = n => if n < 10 { "0" + str(n) } else { str(n) }
+
+// 封面页:与 ori 原 maketitle 同款,作者下方追加编译日期行
+#align(center + top)[
+  #v(20%)
+  #text(2em, weight: 500)[#cover-title]
+  #v(2em, weak: true)
+  #cover-author
+  #v(1.2em)
+  #let now = datetime.today()
+  #text(size: 10pt, fill: luma(45%))[#now.year()-#cover-pad2(now.month())-#cover-pad2(now.day())]
+]
+#pagebreak()
+
 #show: ori.with(
-  title: "Reinforcement Learning",
-  author: "Jiaxin Liu",
+  title: cover-title,
+  author: cover-author,
   semester: "2026 秋",
   date: datetime.today(),
 
   // 中文强调字体:ori 默认 "KaiTi"(专有字体,云端/CI 缺失),改用随项目分发的开源楷体(文鼎中楷)
   font: (emph-cjk: "AR PL UKai"),
 
-  maketitle: true,
+  maketitle: false,
   makeoutline: true,
 
   media: "print",
