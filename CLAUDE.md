@@ -9,10 +9,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & verify
 
 ```bash
-typst compile main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-Notes.pdf
+typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-Notes.pdf
 ```
 
-- 无测试/lint;编译零警告零错误即为通过。本地需安装 IBM Plex 与 Noto Serif SC 字体(CI 的 workflow 中已配置安装步骤)。
+- 无测试/lint;编译零警告零错误即为通过(含 "unknown font family" 警告)。
+- 字体已 vendored 在 **fonts/**,**本地无需安装任何字体**。`--font-path fonts` 加载仓库字体,`--ignore-system-fonts` 屏蔽本机已装字体,保证本地 / CI / typst.app 云端三端字体解析一致(typst.app 会自动发现项目内的字体文件,经 GitHub import 即生效,无需手工上传)。若新增字体族,须先把字体文件放入 fonts/ 并附 OFL 等可再分发许可,否则编译会因缺字体告警或三端不一致。
 - 修改后务必本地编译验证:`#definition`、`#figure`、公式、交叉引用等错误只在编译时暴露。
 
 ## Architecture
@@ -20,6 +21,7 @@ typst compile main.typ RL-Notes.pdf   # 唯一构建命令,输出必须是 RL-No
 - **main.typ** — 唯一入口:导入 ori、全局样式(`#set heading` 编号、`math.equation` 编号、脚注/引用块样式)、按顺序 `#include` 章节、`#bibliography("refs.bib")`。新增章节需在此注册并加 `#pagebreak()`。
 - **chapters/NN-topic.typ** — 章节内容。标题用英文(`= Introduction`、`== About this note`),正文用中文,语言风格简要明了。章节文件不继承 main.typ 的导入作用域。
 - **refs.bib** — BibTeX 文献。主参考书目在第一章用脚注全格式引用:`#footnote[#cite(<zhao2025RLBook>, form: "full", style: "chicago-notes")]`。
+- **fonts/** — vendored 字体(全部 SIL OFL 许可,许可文件随附为 `LICENSE-*.txt`):IBM Plex Serif(7 个字形)+ IBM Plex Mono(4 个),Noto Serif SC(静态 7 字重,取自 notofonts/noto-cjk `Serif2.003` 的 SubsetOTF,勿换成 Google 可变字体——默认实例是 ExtraLight),LXGW WenKai Regular(中文强调用楷体)。与 ori 0.2.5 默认字体一一对应;唯 ori 默认中文强调字体 "KaiTi" 是苹果/微软专有字体、无法分发,已在 main.typ 用 `font: (emph-cjk: "LXGW WenKai")` 覆盖。
 - **assets/** — 图片。引用用根相对路径 `/assets/xxx.png`(leading `/` 相对项目根,在子目录章节中也直接可用)。图片包 `#figure(..., caption: [...]) <label>` 并用 `#ref(<label>)` 交叉引用,图注用英文;外部素材须标注图源,统一写成 `(Source: #link(url)[Name])`(不用 `src`/`from` 写法),自制图可省略。
 - **code/** — 预留,存放后续的代码实现示例。
 

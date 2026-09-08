@@ -9,8 +9,10 @@
 ## 编译
 
 ```bash
-typst compile main.typ RL-Notes.pdf
+typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf
 ```
+
+> 字体已随仓库分发（`fonts/`），编译无需本地安装字体；`typst.app` 云端也会自动使用项目内的字体文件。
 
 ## 结构
 
@@ -20,6 +22,7 @@ typst compile main.typ RL-Notes.pdf
 | `chapters/` | 章节内容（按序号命名） |
 | `refs.bib` | 参考文献 |
 | `assets/` | 图片 |
+| `fonts/` | 构建用字体（OFL 许可，含 IBM Plex、Noto Serif SC、LXGW WenKai） |
 
 ## 引用
 
@@ -28,7 +31,7 @@ typst compile main.typ RL-Notes.pdf
 
 ## 许可证
 
-作者原创内容（笔记正文、自绘图表）采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)（署名-非商业性使用）授权；课程、书籍来源的图片版权归原作者，图注已标注出处。
+作者原创内容（笔记正文、自绘图表）采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)（署名-非商业性使用）授权；课程、书籍来源的图片版权归原作者，图注已标注出处。`fonts/` 内字体依各自 SIL OFL 许可分发，不随本文档的 CC BY-NC 授权。
 
 ## 参考
 

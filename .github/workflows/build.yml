@@ -14,40 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Install fonts (ori template defaults)
-        run: |
-          set -e
-          mkdir -p ~/.local/share/fonts
-          # IBM Plex Serif / Mono
-          base=https://raw.githubusercontent.com/IBM/plex/master/packages
-          for f in \
-            plex-serif/fonts/complete/otf/IBMPlexSerif-Regular.otf \
-            plex-serif/fonts/complete/otf/IBMPlexSerif-Italic.otf \
-            plex-serif/fonts/complete/otf/IBMPlexSerif-Medium.otf \
-            plex-serif/fonts/complete/otf/IBMPlexSerif-SemiBold.otf \
-            plex-serif/fonts/complete/otf/IBMPlexSerif-SemiBoldItalic.otf \
-            plex-serif/fonts/complete/otf/IBMPlexSerif-Bold.otf \
-            plex-serif/fonts/complete/otf/IBMPlexSerif-BoldItalic.otf \
-            plex-mono/fonts/complete/otf/IBMPlexMono-Regular.otf \
-            plex-mono/fonts/complete/otf/IBMPlexMono-Medium.otf \
-            plex-mono/fonts/complete/otf/IBMPlexMono-SemiBold.otf \
-            plex-mono/fonts/complete/otf/IBMPlexMono-Bold.otf; do
-            curl -sfL -o "$HOME/.local/share/fonts/$(basename "$f")" "$base/$f"
-          done
-          # Noto Serif SC (static weights — the Google variable font has an ExtraLight default instance)
-          curl -sfL -o /tmp/noto-serif-sc.zip \
-            https://github.com/notofonts/noto-cjk/releases/download/Serif2.003/14_NotoSerifSC.zip
-          unzip -q -o /tmp/noto-serif-sc.zip -d /tmp/noto-serif-sc
-          cp /tmp/noto-serif-sc/SubsetOTF/SC/*.otf "$HOME/.local/share/fonts/"
-          fc-cache -f
-
+      # 字体已 vendored 在 fonts/(见 CLAUDE.md),无需再安装;--ignore-system-fonts
+      # 保证编译只依赖仓库内字体,与本地、typst.app 云端渲染一致
       - name: Setup Typst
         uses: typst-community/setup-typst@v5
         with:
           cache-dependency-path: main.typ
 
       - name: Compile
-        run: typst compile main.typ RL-Notes.pdf
+        run: typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf
 
       - name: Publish release
         env:
