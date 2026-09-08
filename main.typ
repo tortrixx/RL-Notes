@@ -42,7 +42,7 @@
 ]
 #place(bottom + center)[
   #let now = datetime.today()
-  #text(size: 11pt, fill: luma(55%))[#now.year()-#cover-pad2(now.month())-#cover-pad2(now.day())]
+  #text(size: 13pt)[#now.year()-#cover-pad2(now.month())-#cover-pad2(now.day())]
 ]
 #pagebreak()
 
