@@ -32,8 +32,8 @@
   semester: "2026 秋",
   date: datetime.today(),
 
-  // 中文强调字体:ori 默认 "KaiTi"(专有字体,云端/CI 缺失),改用随项目分发的开源楷体
-  font: (emph-cjk: "LXGW WenKai"),
+  // 中文强调字体:ori 默认 "KaiTi"(专有字体,云端/CI 缺失),改用随项目分发的开源楷体(文鼎中楷)
+  font: (emph-cjk: "AR PL UKai"),
 
   maketitle: true,
   makeoutline: true,
