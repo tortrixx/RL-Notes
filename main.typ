@@ -30,6 +30,8 @@
 #let cover-title = "Reinforcement Learning"
 #let cover-author = "Jiaxin Liu"
 // 封面页:逐字复用 ori 0.2.5 maketitle 原版布局,编译日期置于页面底部居中
+// 封面区在 ori 作用域之外,需手动设置与正文一致的字体栈
+#set text(font: ((name: "IBM Plex Serif", covers: "latin-in-cjk"), "Noto Serif SC"), size: 11pt, lang: "zh", region: "cn")
 #align(center + top)[
   #v(20%)
   #text(2em, weight: 500, none)
