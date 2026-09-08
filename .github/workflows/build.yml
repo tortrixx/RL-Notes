@@ -22,6 +22,9 @@ jobs:
           cache-dependency-path: main.typ
 
       - name: Compile
+        # 固定为作者所在时区(UTC+8):封面日期取编译当日,UTC 下凌晨推送会印成"昨天"
+        env:
+          TZ: Asia/Shanghai
         run: typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf
 
       - name: Publish release
