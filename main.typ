@@ -31,15 +31,18 @@
 #let cover-author = "Jiaxin Liu"
 #let cover-pad2 = n => if n < 10 { "0" + str(n) } else { str(n) }
 
-// 封面页:与 ori 原 maketitle 同款,作者下方追加编译日期行
+// 封面页:逐字复用 ori 0.2.5 maketitle 原版布局,编译日期置于页面底部居中
 #align(center + top)[
   #v(20%)
+  #text(2em, weight: 500, none)
+  #v(2em, weak: true)
   #text(2em, weight: 500)[#cover-title]
   #v(2em, weak: true)
   #cover-author
-  #v(1.2em)
+]
+#place(bottom + center)[
   #let now = datetime.today()
-  #text(size: 10pt, fill: luma(45%))[#now.year()-#cover-pad2(now.month())-#cover-pad2(now.day())]
+  #text(size: 11pt, fill: luma(55%))[#now.year()-#cover-pad2(now.month())-#cover-pad2(now.day())]
 ]
 #pagebreak()
 
