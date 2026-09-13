@@ -33,15 +33,17 @@
 
 评价指标 $J(theta)$ 可以是状态价值函数的期望值，也可以是动作价值函数的期望值，或者其他与策略性能相关的指标。论文中常用的评价指标有两种：
 
-- average state value: $ J(theta) &= bb(E)_(s~d_pi)[v_pi (s)] \ &= bb(E)[sum_(t=0)^infinity gamma^t R_(t+1)] $ <avg-state-value>
+- average state value: $ J(theta) & = bb(E)_(s~d_pi)[v_pi (s)] \
+           & = bb(E)[sum_(t=0)^infinity gamma^t R_(t+1)] $ <avg-state-value>
 
 表示在策略 $pi$ 下，智能体访问每个状态的概率分布为 $d_pi$，而 $v_pi (s)$ 是状态 $s$ 的价值函数。该指标衡量了在策略 $pi$ 下，智能体在所有可能状态中获得的平均价值。
 
-- average one-step reward: $ J(theta) &= bb(E)_(s~d_pi)[r_pi (s)] \ &= lim_(n -> oo) 1/n bb(E)[sum_(k=1)^n R_(t+k)] $ <avg-one-step-reward>
+- average one-step reward: $ J(theta) & = bb(E)_(s~d_pi)[r_pi (s)] \
+           & = lim_(n -> oo) 1/n bb(E)[sum_(k=1)^n R_(t+k)] $ <avg-one-step-reward>
 
 表示在策略 $pi$ 下，智能体访问每个状态的概率分布为 $d_pi$，而 $ r_pi (s)
-  = sum_(a in cal(A)) pi(a | s) r(s, a)
-  = sum_(a in cal(A)) sum_r pi(a | s) dot r dot p(r | s, a) $
+= sum_(a in cal(A)) pi(a | s) r(s, a)
+= sum_(a in cal(A)) sum_r pi(a | s) dot r dot p(r | s, a) $
 
 是状态 $s$ 下，智能体在采取动作 $a$ 后获得的即时奖励的期望值。该指标衡量了在策略 $pi$ 下，智能体在所有可能状态中获得的平均即时奖励。
 
@@ -53,7 +55,9 @@
 
 能否避开 $nabla_theta d_pi$，只对策略本身求导？答案是可以，关键是下面的对数导数技巧（log-derivative trick）。由链式法则：
 
-$ nabla_theta ln pi_theta (a | s) = (nabla_theta pi_theta (a | s)) / (pi_theta (a | s)) $
+$
+  nabla_theta ln pi_theta (a | s) = (nabla_theta pi_theta (a | s)) / (pi_theta (a | s))
+$
 
 即 $nabla_theta pi_theta (a | s) = pi_theta (a | s) nabla_theta ln pi_theta (a | s)$。这个等式看似平凡，却是整个策略梯度方法的基石：
 
@@ -74,15 +78,19 @@ $ nabla_theta ln pi_theta (a | s) = (nabla_theta pi_theta (a | s)) / (pi_theta (
 在此基础上，策略梯度定理给出了 $J(theta)$ 梯度的简洁表达式：
 
 #theorem[Policy Gradient Theorem（策略梯度定理）][
-	对平均状态价值指标 @avg-state-value 与平均一步奖励指标 @avg-one-step-reward，当 $pi_theta (a | s)$ 对 $theta$ 可微时，梯度 $nabla_theta J(theta)$ 可统一写成
+  对平均状态价值指标 @avg-state-value 与平均一步奖励指标 @avg-one-step-reward，当 $pi_theta (a | s)$ 对 $theta$ 可微时，梯度 $nabla_theta J(theta)$ 可统一写成
 
-	$ nabla_theta J(theta) = sum_s d_pi (s) sum_a pi_theta (a | s) nabla_theta ln pi_theta (a | s) q_pi (s, a) $
+  $
+    nabla_theta J(theta) = sum_s d_pi (s) sum_a pi_theta (a | s) nabla_theta ln pi_theta (a | s) q_pi (s, a)
+  $
 
-	或等价的期望形式：
+  或等价的期望形式：
 
-	$ nabla_theta J(theta) = bb(E)_(s ~ d_pi, a ~ pi_theta)[nabla_theta ln pi_theta (a | s) q_pi (s, a)] $
+  $
+    nabla_theta J(theta) = bb(E)_(s ~ d_pi, a ~ pi_theta)[nabla_theta ln pi_theta (a | s) q_pi (s, a)]
+  $
 
-	其中 $q_pi (s, a)$ 为与所选指标对应的动作价值函数。不同指标下，梯度表达式的差别只在于 $q_pi$ 的取值形式与一个与 $theta$ 无关的常数因子（折扣情形为 $1/(1 - gamma)$），不影响梯度上升的方向。
+  其中 $q_pi (s, a)$ 为与所选指标对应的动作价值函数。不同指标下，梯度表达式的差别只在于 $q_pi$ 的取值形式与一个与 $theta$ 无关的常数因子（折扣情形为 $1/(1 - gamma)$），不影响梯度上升的方向。
 ]
 
 这个定理的关键意义在于，等号右侧*不再出现 $nabla_theta d_pi$*——状态分布对 $theta$ 的隐式依赖在推导中被消去了。推导思想是：令 $theta$ 产生一个小扰动，把指标的一阶变化展开，再借助平稳方程 $d_pi = d_pi P_pi$ 与概率归一化恒等式，把状态分布的变化全部吸收进动作价值 $q_pi (s, a)$（细节从略）。
@@ -98,7 +106,9 @@ $ nabla_theta ln pi_theta (a | s) = (nabla_theta pi_theta (a | s)) / (pi_theta (
 
 用样本 $(s_t, a_t)$ 与其价值估计 $q_t (s_t, a_t)$ 代入，得到随机梯度上升的更新律：
 
-$ theta_(t+1) = theta_t + alpha nabla_theta ln pi_theta (a_t | s_t) q_t (s_t, a_t) $
+$
+  theta_(t+1) = theta_t + alpha nabla_theta ln pi_theta (a_t | s_t) q_t (s_t, a_t)
+$
 
 其中 $alpha$ 为学习率。$q_t$ 的不同估计方式，导出不同的算法：
 
@@ -119,13 +129,17 @@ REINFORCE 的几个要点：
 - *On-policy、整条轨迹更新*：样本必须服从当前的 $pi_theta$，轨迹随策略更新而作废，因此每一轮都要用新策略重新采样；同时 MC 回报要等整条轨迹结束才能得到，无法像 TD 那样边走边学。
 - *高方差，可加基线*：$G_t$ 累积了整条轨迹的随机性，方差很大，需要较小的学习率。常用降方差手段是减去*基线（baseline）* $b(s_t)$：
 
-  $ theta_(t+1) = theta_t + alpha nabla_theta ln pi_theta (a_t | s_t) (G_t - b(s_t)) $
+  $
+    theta_(t+1) = theta_t + alpha nabla_theta ln pi_theta (a_t | s_t) (G_t - b(s_t))
+  $
 
   只要 $b(s_t)$ 与动作无关，减基线就不改变更新的期望：由归一化恒等式 $sum_a nabla_theta pi_theta (a | s) = 0$ 可知 $bb(E)_(a ~ pi_theta)[nabla_theta ln pi_theta (a | s) b(s)] = 0$；但合适的 $b(s)$，如状态价值 $v_pi (s)$，能显著降低方差。此时 $G_t - b(s_t)$ 是对*优势函数* $A_pi (s, a) = q_pi (s, a) - v_pi (s)$ 的蒙特卡洛估计。
 
 - *探索与利用的自平衡*：利用 $nabla ln pi = nabla pi / pi$，更新律可改写为
 
-  $ theta_(t+1) = theta_t + alpha (G_t) / (pi_theta (a_t | s_t)) nabla_theta pi_theta (a_t | s_t) $
+  $
+    theta_(t+1) = theta_t + alpha (G_t) / (pi_theta (a_t | s_t)) nabla_theta pi_theta (a_t | s_t)
+  $
 
   回报 $G_t$ 越大，该动作的概率被抬得越多（利用）；概率 $pi (a_t | s_t)$ 越小——动作越少被选——同样的回报带来越大的相对提升（探索）。探索与利用在更新中被自动平衡。
 

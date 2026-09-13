@@ -33,7 +33,11 @@
 // 编译日期置于页面底部居中。封面区在 ori 作用域之外,手动套用 ori 同款字体栈
 // (经 default-font 常量引用,ori 换字体时自动跟随)。
 // 注意:此自定义封面替代 ori maketitle,勿将下方 ori.with 的 maketitle 改回 true,否则会出现两页封面。
-#set text(font: ((name: default-font.main, covers: "latin-in-cjk"), default-font.cjk), lang: "zh", region: "cn")
+#set text(
+  font: ((name: default-font.main, covers: "latin-in-cjk"), default-font.cjk),
+  lang: "zh",
+  region: "cn",
+)
 #align(center + top)[
   #v(20%)
   #v(2em, weak: true)
@@ -42,7 +46,9 @@
   #cover-author
 ]
 #place(bottom + center)[
-  #text(size: 13pt)[#cover-date.display("[year]年[month padding:none]月[day padding:none]日")]
+  #text(size: 13pt)[#cover-date.display(
+    "[year]年[month padding:none]月[day padding:none]日",
+  )]
 ]
 #pagebreak(weak: true)
 

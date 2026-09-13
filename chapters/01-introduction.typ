@@ -39,8 +39,8 @@
 )
 
 #figure(
-  image("/assets/BookMap.png", width:88%),
-  caption: [Roadmap of Reinforcement Learning (Source: #link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning/blob/main/Readme_Images/BookMap.png")[BookMap.png])]
+  image("/assets/BookMap.png", width: 88%),
+  caption: [Roadmap of Reinforcement Learning (Source: #link("https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning/blob/main/Readme_Images/BookMap.png")[BookMap.png])],
 ) <bookmap>
 
 == Other study materials
@@ -72,13 +72,15 @@
 
 - 李宏毅 — National Taiwan University \
   - #link("https://youtu.be/XWukX-ayIrs?si=iINM06hMJBa-ZsFw")[
-  _概述增强式学习（1-5节）_
-  ] \
+      _概述增强式学习（1-5节）_
+    ] \
     深入浅出讲解强化学习的基本概念，适合初学者建立直观认识。
 
-  - #link("https://youtube.com/playlist?list=PLJV_el3uVTsODxQFgzMzPLa16h6B8kWM_&si=uXz0EKRvIkD8QeIz")[
-    _深度强化学习, 2018_
-  ] \
+  - #link(
+      "https://youtube.com/playlist?list=PLJV_el3uVTsODxQFgzMzPLa16h6B8kWM_&si=uXz0EKRvIkD8QeIz",
+    )[
+      _深度强化学习, 2018_
+    ] \
     深度强化学习课程，涵盖 PPO、DQN、Actor-Critic 等基础算法，\
     适合掌握基础算法后进一步学习。
 
