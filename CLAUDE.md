@@ -14,9 +14,9 @@ typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf   # 
 
 - 无测试/lint;编译零警告零错误即为通过(含 "unknown font family" 警告)。
 - 字体已 vendored 在 **fonts/**,**本地无需安装任何字体**。`--font-path fonts` 加载仓库字体,`--ignore-system-fonts` 屏蔽本机已装字体,保证本地 / CI / typst.app 云端三端字体解析一致(typst.app 会自动发现项目内的字体文件,经 GitHub import 即生效,无需手工上传)。若新增字体族,须先把字体文件放入 fonts/ 并附 OFL 等可再分发许可,否则编译会因缺字体告警或三端不一致。
-- **裸 `typst compile main.typ` 会静默出错**:Typst **不会**自动搜索项目里的 `fonts/` 子目录,必须显式 `--font-path fonts`。漏掉时项目字体一个都不生效——回退到本机系统字体,编译照样成功、只报 "unknown font family";还会把本机专有字体(如 macOS 的 `KaiTi`)嵌进 PDF,换台机器 / CI 上版式完全不同。**产物叫 `main.pdf` 而不是 `RL-Notes.pdf`,就是跑错命令的信号**(Typst 未指定输出名时按输入文件命名)。同理,在 typst.app 里若没把字体文件放进项目,报的也是同一条警告,回退结果一样。
+- **裸 `typst compile main.typ` 会静默出错**:Typst **不搜索**项目里的 `fonts/` 子目录,必须显式 `--font-path fonts`。漏掉时项目字体全部失效、回退到本机系统字体——编译照样成功,只报 "unknown font family",还会把本机专有字体(如 macOS 的 `KaiTi`)嵌进 PDF,换台机器 / CI 上版式完全不同。**产物叫 `main.pdf` 而不是 `RL-Notes.pdf`,就是跑错命令的信号。**
 - 修改后务必本地编译验证:`#definition`、`#figure`、公式、交叉引用等错误只在编译时暴露。
-- **格式化用 typstyle**(`brew install typstyle`,当前 v0.15.x):`typstyle -i main.typ chapters/*.typ`。它只重排源码、**不改变渲染结果**——本仓库实测格式化前后 15 页逐页像素一致,所以采纳它没有视觉风险。两个注意点:① 缩进统一成 2 空格(第三章、第九章原本用制表符);② 它**只在部分位置**把 `&=` 规范化成 `& =`,格式化后两种写法会共存(渲染相同,别手工来回改)。参数只能走命令行、**没有配置文件**:`-l/--line-width`(默认 80)、`-t/--indent-width`(默认 2)、`--no-reorder-import-items`、`--wrap-text`。若要 CI 把关用 `typstyle --check`(不符合则报红),**不要**做成自动格式化并提交的机器人——那会静默改写公式写法。已归档的 typstfmt 只支持到 Typst 0.10,勿用。
+- **提交/推送前先格式化,CI 会校验**:本地 `typstyle -i main.typ chapters/*.typ`(`brew install typstyle`,当前 v0.15.1);`.github/workflows/format.yml` 以 `typstyle --check` 把关。它只重排源码、**不改变渲染结果**(实测 250ppi 下逐页像素一致),因此独立成 workflow 而不阻断 PDF 发布。三个注意点:① **CI 钉的版本必须与本地一致**——版本不同会对同一文件给出不同结果,造成"本地通过、CI 报红"的假失败;② 缩进统一成 2 空格;③ `&=` 只在部分位置被规范化为 `& =`,两种写法共存是正常的,别手工来回改。已归档的 typstfmt(仅支持 Typst 0.10)勿用。
 
 ## Architecture
 
@@ -31,11 +31,12 @@ typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf   # 
 
 - **没有 `**加粗**` 标记**:`**x**` 会被解析成空强调并报 "no text within stars" 警告,只渲染成普通文本。加粗一律用 `#strong[...]`,斜体用 `*...*`。
 - **章节内用 ori 函数需自己 import**:`#include` 的子文件不继承 main.typ 的作用域,需在章节文件顶部加 `#import "@preview/ori:0.2.5": *`。ori 0.2.5 经 Theorion 包提供定理环境:`#definition`、`#theorem`、`#proposition`、`#lemma`、`#corollary`、`#proof`、`#example`、`#assumption`、`#conclusion`、`#problem`、`#remark-block`,签名均为 `#env[标题][内容] <label>`(自动编号,可 `@标签` 交叉引用)。**语句放框内,解释文字放框外**——第三章约定:Bellman 方程用 `#theorem` 框、矩阵形式用 `#corollary` 框。
-- **代码字体(raw 块)在 main.typ 覆盖,别动 ori 的 `cjk` 字段**:ori 内部自带 `show raw: set text(font: ((name: font.mono, covers: "latin-in-cjk"), font.cjk))`(ori `lib.typ:78`),即 raw 块内的中文回退到**正文**中文字体(Noto Serif SC 宋体,在代码块里很违和)。要改代码字体,须在 `#show: ori.with(...)` **之后**再写一条 `show raw: set text(...)` 整条覆盖——Typst 中后定义的 show 规则优先。**不能**改 `ori.with(font: (cjk: ...))`,那会把整本书正文中文字体一起换掉。当前配置见 main.typ:Latin 用 JetBrains Mono、中文回退 Maple Mono NF(`covers: "latin-in-cjk"` 限定前者只吃 Latin,汉字落到后者)。
+- **代码字体在 main.typ 覆盖,别动 ori 的 `cjk` 字段**:ori 自带 `show raw: set text(font: ((name: font.mono, covers: "latin-in-cjk"), font.cjk))`(`lib.typ:78`),把代码块中文回退到**正文**宋体,很违和。须在 `#show: ori.with(...)` **之后**再写一条 `show raw` 整条覆盖(后定义的 show 规则优先);**不能**改 `ori.with(font: (cjk: ...))`——那会连整本书正文中文字体一起换掉。当前:Latin 用 JetBrains Mono,中文回退 Maple Mono NF(`covers: "latin-in-cjk"` 限定前者只吃 Latin)。
 - **字体家族名末尾的 `CN` 会被 Typst 吃掉**:`MapleMono-NF-CN-Regular.ttf` 的 name 表 nameID 1 明明白白写着 `Maple Mono NF CN`,但 `typst fonts` 报出的家族名是 **`Maple Mono NF`**——Typst 会剥掉家族名末尾的 `CN` token(只剥 `CN`,大小写不敏感;`SC`/`TC`/`JP`/`KR`/`Hant` 以及非末尾位置的 `CN` 均原样保留)。**以 `typst fonts` 的输出为准**(`typst fonts --font-path fonts --ignore-system-fonts`);若按文件里的名字写成 `"Maple Mono NF CN"`,Typst 只报一条 "unknown font family" 警告然后静默回退——**回退到哪个字体取决于环境**(typst.app 用自带字体,裸编译用本机系统字体如 `KaiTi`),编译照样成功,只是字体悄悄不对,所以编译警告必须清零。
+- **正文中文字重靠 `par` 作用域提升**:ori 从未设过 `weight`,走 Typst 默认 400,而 Noto Serif SC 的 Regular 偏细。main.typ 用 `#show par: it => { show regex("\p{script=Han}"): set text(weight: 500); it }` 把段落内汉字提到 500,西文仍是 IBM Plex Serif Regular(汉字笔画密度高,同字重下视觉更轻,提到 500 恰好补偿)。**作用域必须限定在 `par`**——裸的 `#show regex(...)` 会连标题汉字一并接管、把标题粗体压成 Medium(Typst 的 show 规则后定义者处在更外层)。**验证时须用「只含标题、不含 `#strong`」的隔离文档**:否则 `#strong` 贡献的 Bold 会掩盖标题被压平,检查内嵌字体里 `NotoSerifSC-Bold` 是否仍在。
 - **`#show bibliography: none` 是有意为之**:隐藏参考文献列表但保留引用解析——文献全量信息已写在脚注里,不要删除该行。
 - **公式自动编号**:main.typ 设置了 `#set math.equation(numbering: "(1)")`,独立的 `$ ... $` 行即为编号公式。公式后可加标签 `$ ... $ <bellman-eq>` 供 `#ref(<bellman-eq>)` 交叉引用(第三章 Bellman 方程、矩阵形式已如此)。
-- **多行公式对齐**:多步推导用 `&` 作对齐点(等号对齐),行间用 `\` 换行;仅靠源码换行不会对齐等号。**`&=` 与 `& =` 渲染结果完全相同**,用哪种都行——但见下方 typstyle 条目:它会**在部分位置**把 `&=` 规范化成 `& =`,所以格式化后两种写法混着出现是正常的,不要手工来回改。示例:
+- **多行公式对齐**:多步推导用 `&` 作对齐点(等号对齐),行间用 `\` 换行;仅靠源码换行不会对齐等号。**`&=` 与 `& =` 渲染结果完全相同**,用哪种都行——但见 Build & verify 的 typstyle 条目:它会**在部分位置**把 `&=` 规范化成 `& =`,所以格式化后两种写法混着出现是正常的,不要手工来回改。示例:
   ```typst
   $
       v_pi(s)

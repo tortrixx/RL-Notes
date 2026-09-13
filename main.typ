@@ -29,10 +29,8 @@
 #let cover-author = "Jiaxin Liu"
 #let cover-date = datetime.today()
 
-// 封面页:沿用 ori 0.2.5 maketitle 原版布局(subject 位本项目为空,省去空行),
-// 编译日期置于页面底部居中。封面区在 ori 作用域之外,手动套用 ori 同款字体栈
-// (经 default-font 常量引用,ori 换字体时自动跟随)。
-// 注意:此自定义封面替代 ori maketitle,勿将下方 ori.with 的 maketitle 改回 true,否则会出现两页封面。
+// 封面页:自定义版式,替代 ori maketitle(勿把下方 maketitle 改回 true,会出现两页封面)。
+// 此处在 ori 作用域之外,手动套用同款字体栈(引用 default-font 常量,随 ori 换字体)。
 #set text(
   font: ((name: default-font.main, covers: "latin-in-cjk"), default-font.cjk),
   lang: "zh",
@@ -67,18 +65,18 @@
   media: "print",
 )
 
+// 中文正文字重:ori 未设 weight(默认 400)偏轻,把段落内汉字提到 500。
+// 必须限定在 par 内——裸的 `#show regex(...)` 会连标题汉字一并接管,把标题粗体压成 Medium。
+#show par: it => {
+  show regex("\p{script=Han}"): set text(weight: 500)
+  it
+}
+
 #show raw: set text(size: 1.05em)
 
-// 代码字体:Latin 用 JetBrains Mono,中文注释回退到等宽中文 Maple Mono NF。
-// `covers: "latin-in-cjk"` 限定 JetBrains 只吃 Latin,汉字落到第二个字体。
-// 必须放在 ori.with 之后——ori 内部自带一条 `show raw`,把中文回退到正文的 Noto Serif SC
-// (lib.typ:78),后定义的 show 规则优先,在此整条覆盖;不能改 ori 的 cjk 字段,
-// 那会连正文中文字体一起换掉。
-//
-// 注意字体名写作 "Maple Mono NF":文件是 MapleMono-NF-CN-Regular.ttf,name 表里
-// nameID 1 也确实写着 "Maple Mono NF CN",但 Typst 会剥掉家族名末尾的 `CN` token
-// (`typst fonts` 里显示什么就得写什么)。写成 "Maple Mono NF CN" 会报
-// "unknown font family" 并静默回退。
+// 代码字体:Latin 用 JetBrains Mono,中文回退 Maple Mono NF。
+// 须放在 ori.with 之后,整条覆盖其内置的 `show raw`(否则代码中文回退成正文宋体)。
+// 家族名是 "Maple Mono NF"——Typst 会剥掉末尾的 `CN`,写全名会报 unknown 并静默回退。
 #show raw: set text(
   font: ((name: "JetBrains Mono", covers: "latin-in-cjk"), "Maple Mono NF"),
   size: 1.05em,

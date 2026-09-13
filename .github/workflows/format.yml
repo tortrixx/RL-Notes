@@ -1,0 +1,30 @@
+name: Check formatting
+
+# 独立的检查而非 build.yml 里的一步:格式化只影响源码排版、不影响渲染结果
+# (实测逐页像素一致),不应该因为它出错就阻断 PDF 发布。
+# 若要改成硬闸门,把下面两步挪进 build.yml 的 Compile 之前即可。
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  typstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # 版本必须与本地 brew 安装的 typstyle 一致(v0.15.1)。不同版本对同一文件
+      # 可能给出不同结果,会造成"本地通过、CI 报红"的假失败。
+      # 产物名取自 typstyle-action 的 Dockerfile。
+      - name: Install typstyle
+        run: |
+          curl -fsSL -o /tmp/typstyle \
+            https://github.com/typstyle-rs/typstyle/releases/download/v0.15.1/typstyle-x86_64-unknown-linux-musl
+          chmod +x /tmp/typstyle
+          sudo mv /tmp/typstyle /usr/local/bin/typstyle
+          typstyle --version
+
+      - name: Check formatting
+        run: typstyle --check main.typ chapters/

@@ -3,3 +3,6 @@
 #   typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf
 RL-Notes.pdf
 main.pdf
+
+# macOS
+.DS_Store
