@@ -65,13 +65,6 @@
   media: "print",
 )
 
-// 中文正文字重:ori 未设 weight(默认 400)偏轻,把段落内汉字提到 500。
-// 必须限定在 par 内——裸的 `#show regex(...)` 会连标题汉字一并接管,把标题粗体压成 Medium。
-#show par: it => {
-  show regex("\p{script=Han}"): set text(weight: 500)
-  it
-}
-
 #show raw: set text(size: 1.05em)
 
 // 代码字体:Latin 用 JetBrains Mono,中文回退 Maple Mono NF。
