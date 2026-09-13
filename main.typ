@@ -1,8 +1,6 @@
 #import "@preview/ori:0.2.5": *
 
-#set heading(
-  numbering: numbly("{1:一}、", default: "1.1  "),
-)
+#set heading(numbering: "1.1 ")
 
 #set math.equation(numbering: "(1)")
 
@@ -61,6 +59,23 @@
   makeoutline: true,
 
   media: "print",
+)
+
+#show raw: set text(size: 1.05em)
+
+// 代码字体:Latin 用 JetBrains Mono,中文注释回退到等宽中文 Maple Mono NF。
+// `covers: "latin-in-cjk"` 限定 JetBrains 只吃 Latin,汉字落到第二个字体。
+// 必须放在 ori.with 之后——ori 内部自带一条 `show raw`,把中文回退到正文的 Noto Serif SC
+// (lib.typ:78),后定义的 show 规则优先,在此整条覆盖;不能改 ori 的 cjk 字段,
+// 那会连正文中文字体一起换掉。
+//
+// 注意字体名写作 "Maple Mono NF":文件是 MapleMono-NF-CN-Regular.ttf,name 表里
+// nameID 1 也确实写着 "Maple Mono NF CN",但 Typst 会剥掉家族名末尾的 `CN` token
+// (`typst fonts` 里显示什么就得写什么)。写成 "Maple Mono NF CN" 会报
+// "unknown font family" 并静默回退。
+#show raw: set text(
+  font: ((name: "JetBrains Mono", covers: "latin-in-cjk"), "Maple Mono NF"),
+  size: 1.05em,
 )
 
 #show quote: it => block(

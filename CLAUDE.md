@@ -14,6 +14,7 @@ typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf   # 
 
 - 无测试/lint;编译零警告零错误即为通过(含 "unknown font family" 警告)。
 - 字体已 vendored 在 **fonts/**,**本地无需安装任何字体**。`--font-path fonts` 加载仓库字体,`--ignore-system-fonts` 屏蔽本机已装字体,保证本地 / CI / typst.app 云端三端字体解析一致(typst.app 会自动发现项目内的字体文件,经 GitHub import 即生效,无需手工上传)。若新增字体族,须先把字体文件放入 fonts/ 并附 OFL 等可再分发许可,否则编译会因缺字体告警或三端不一致。
+- **裸 `typst compile main.typ` 会静默出错**:Typst **不会**自动搜索项目里的 `fonts/` 子目录,必须显式 `--font-path fonts`。漏掉时项目字体一个都不生效——回退到本机系统字体,编译照样成功、只报 "unknown font family";还会把本机专有字体(如 macOS 的 `KaiTi`)嵌进 PDF,换台机器 / CI 上版式完全不同。**产物叫 `main.pdf` 而不是 `RL-Notes.pdf`,就是跑错命令的信号**(Typst 未指定输出名时按输入文件命名)。同理,在 typst.app 里若没把字体文件放进项目,报的也是同一条警告,回退结果一样。
 - 修改后务必本地编译验证:`#definition`、`#figure`、公式、交叉引用等错误只在编译时暴露。
 
 ## Architecture
@@ -21,7 +22,7 @@ typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf   # 
 - **main.typ** — 唯一入口:导入 ori、全局样式(`#set heading` 编号、`math.equation` 编号、脚注/引用块样式)、按顺序 `#include` 章节、`#bibliography("refs.bib")`。新增章节需在此注册并加 `#pagebreak()`。
 - **chapters/NN-topic.typ** — 章节内容。标题用英文(`= Introduction`、`== About this note`),正文用中文,语言风格简要明了。章节文件不继承 main.typ 的导入作用域。
 - **refs.bib** — BibTeX 文献。主参考书目在第一章用脚注全格式引用:`#footnote[#cite(<zhao2025RLBook>, form: "full", style: "chicago-notes")]`。
-- **fonts/** — vendored 字体(许可文件随附为 `LICENSE-*.txt`):IBM Plex Serif(7 个字形)+ IBM Plex Mono(4 个,OFL)、Noto Serif SC(静态 7 字重,OFL,取自 notofonts/noto-cjk `Serif2.003` 的 SubsetOTF,勿换成 Google 可变字体——默认实例是 ExtraLight)、AR PL UKai(文鼎中楷,`ARPLUKai.ttf`,Arphic Public License,来源 Debian `fonts-arphic-ukai` 的 ukai.ttc 拆出 CN 面——typst.app 不识别 `.ttc` 集合文件,必须用单文件 ttf;中文强调用楷体)。**IBM Plex 的 Medium/SemiBold/SemiBoldItalic 必须用 TTF 版**(IBM/plex 仓库 `fonts/complete/ttf/`):对应 OTF 的家族名是缩写后缀 `Medm`/`SmBld`,Typst 无法归并进 "IBM Plex Serif" 家族,500/600 字重(标题页、定理框标题)会静默落到 Regular/Bold。与 ori 0.2.5 默认字体一一对应;唯 ori 默认中文强调字体 "KaiTi" 是苹果/微软专有字体、无法分发,已在 main.typ 用 `font: (emph-cjk: "AR PL UKai")` 覆盖。
+- **fonts/** — vendored 字体(许可文件随附为 `LICENSE-*.txt`):IBM Plex Serif(7 个字形)+ IBM Plex Mono(4 个,OFL)、Noto Serif SC(静态 7 字重,OFL,取自 notofonts/noto-cjk `Serif2.003` 的 SubsetOTF,勿换成 Google 可变字体——默认实例是 ExtraLight)、AR PL UKai(文鼎中楷,`ARPLUKai.ttf`,Arphic Public License,来源 Debian `fonts-arphic-ukai` 的 ukai.ttc 拆出 CN 面——typst.app 不识别 `.ttc` 集合文件,必须用单文件 ttf;中文强调用楷体)、**代码字体** JetBrains Mono(4 个字形 Regular/Bold/Italic/BoldItalic,OFL)+ Maple Mono NF CN(`MapleMono-NF-CN-{Regular,Bold}.ttf`,OFL,21MB/字重;raw 块内中文回退用它)。**IBM Plex 的 Medium/SemiBold/SemiBoldItalic 必须用 TTF 版**(IBM/plex 仓库 `fonts/complete/ttf/`):对应 OTF 的家族名是缩写后缀 `Medm`/`SmBld`,Typst 无法归并进 "IBM Plex Serif" 家族,500/600 字重(标题页、定理框标题)会静默落到 Regular/Bold。与 ori 0.2.5 默认字体一一对应;唯 ori 默认中文强调字体 "KaiTi" 是苹果/微软专有字体、无法分发,已在 main.typ 用 `font: (emph-cjk: "AR PL UKai")` 覆盖。
 - **assets/** — 图片。引用用根相对路径 `/assets/xxx.png`(leading `/` 相对项目根,在子目录章节中也直接可用)。图片包 `#figure(..., caption: [...]) <label>` 并用 `#ref(<label>)` 交叉引用,图注用英文;外部素材须标注图源,统一写成 `(Source: #link(url)[Name])`(不用 `src`/`from` 写法),自制图可省略。
 - **code/** — 预留,存放后续的代码实现示例。
 
@@ -29,6 +30,8 @@ typst compile --font-path fonts --ignore-system-fonts main.typ RL-Notes.pdf   # 
 
 - **没有 `**加粗**` 标记**:`**x**` 会被解析成空强调并报 "no text within stars" 警告,只渲染成普通文本。加粗一律用 `#strong[...]`,斜体用 `*...*`。
 - **章节内用 ori 函数需自己 import**:`#include` 的子文件不继承 main.typ 的作用域,需在章节文件顶部加 `#import "@preview/ori:0.2.5": *`。ori 0.2.5 经 Theorion 包提供定理环境:`#definition`、`#theorem`、`#proposition`、`#lemma`、`#corollary`、`#proof`、`#example`、`#assumption`、`#conclusion`、`#problem`、`#remark-block`,签名均为 `#env[标题][内容] <label>`(自动编号,可 `@标签` 交叉引用)。**语句放框内,解释文字放框外**——第三章约定:Bellman 方程用 `#theorem` 框、矩阵形式用 `#corollary` 框。
+- **代码字体(raw 块)在 main.typ 覆盖,别动 ori 的 `cjk` 字段**:ori 内部自带 `show raw: set text(font: ((name: font.mono, covers: "latin-in-cjk"), font.cjk))`(ori `lib.typ:78`),即 raw 块内的中文回退到**正文**中文字体(Noto Serif SC 宋体,在代码块里很违和)。要改代码字体,须在 `#show: ori.with(...)` **之后**再写一条 `show raw: set text(...)` 整条覆盖——Typst 中后定义的 show 规则优先。**不能**改 `ori.with(font: (cjk: ...))`,那会把整本书正文中文字体一起换掉。当前配置见 main.typ:Latin 用 JetBrains Mono、中文回退 Maple Mono NF(`covers: "latin-in-cjk"` 限定前者只吃 Latin,汉字落到后者)。
+- **字体家族名末尾的 `CN` 会被 Typst 吃掉**:`MapleMono-NF-CN-Regular.ttf` 的 name 表 nameID 1 明明白白写着 `Maple Mono NF CN`,但 `typst fonts` 报出的家族名是 **`Maple Mono NF`**——Typst 会剥掉家族名末尾的 `CN` token(只剥 `CN`,大小写不敏感;`SC`/`TC`/`JP`/`KR`/`Hant` 以及非末尾位置的 `CN` 均原样保留)。**以 `typst fonts` 的输出为准**(`typst fonts --font-path fonts --ignore-system-fonts`);若按文件里的名字写成 `"Maple Mono NF CN"`,Typst 只报一条 "unknown font family" 警告然后静默回退——**回退到哪个字体取决于环境**(typst.app 用自带字体,裸编译用本机系统字体如 `KaiTi`),编译照样成功,只是字体悄悄不对,所以编译警告必须清零。
 - **`#show bibliography: none` 是有意为之**:隐藏参考文献列表但保留引用解析——文献全量信息已写在脚注里,不要删除该行。
 - **公式自动编号**:main.typ 设置了 `#set math.equation(numbering: "(1)")`,独立的 `$ ... $` 行即为编号公式。公式后可加标签 `$ ... $ <bellman-eq>` 供 `#ref(<bellman-eq>)` 交叉引用(第三章 Bellman 方程、矩阵形式已如此)。
 - **多行公式对齐**:多步推导每行以 `&=` 开头(等号对齐),行间用 `\` 换行;仅靠源码换行不会对齐等号。示例:
